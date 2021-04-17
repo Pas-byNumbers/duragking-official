@@ -6,10 +6,12 @@ import {
   FormControl,
   Button,
 } from "react-bootstrap";
+import LogInModal from "../components/LogInModal";
+import RegisterModal from "../components/RegisterModal";
+import { ButtonGroup } from "react-bootstrap";
+import { Link } from "react-router-dom"
 
-const NavbarContainer = ({
-  determinePageServe
-}) => {
+const NavbarContainer = () => {
   return (
     <Navbar bg="light" expand="lg">
       <Navbar.Brand href="#home">DuRag King</Navbar.Brand>
@@ -18,9 +20,15 @@ const NavbarContainer = ({
         <Nav className="mr-auto">
           {/* <Nav.Link href="#home" handleClick={props.determinePageServe("home")} >Home</Nav.Link> */}
           {/* <Nav.Link href="#home" handleClick={props.determinePageServe("user")} >Profile</Nav.Link> */}
-          <Button variant="light" onClick={() => determinePageServe("home")} >Home</Button>
-          <Button variant="light" onClick={() => determinePageServe("user")} >Profile</Button>
-          <Button variant="light" onClick={() => determinePageServe("news")} >News</Button>
+          <Button variant="light">
+            <Link to="/">Home</Link>
+          </Button>
+          <Button variant="light">
+            <Link to="/profile">Profile</Link>
+          </Button>
+          <Button variant="light">
+            <Link to="/news">News</Link>
+          </Button>
           {/* <Nav.Link href="#link">News</Nav.Link> */}
 
           <NavDropdown title="Shop" id="basic-nav-dropdown">
@@ -35,6 +43,10 @@ const NavbarContainer = ({
             </NavDropdown.Item>
           </NavDropdown>
         </Nav>
+        <ButtonGroup aria-label="Basic example" className="mr-sm-2">
+          <RegisterModal />
+          <LogInModal />
+          </ButtonGroup>
         <Form inline>
           <FormControl type="text" placeholder="Search" className="mr-sm-2" />
           <Button variant="outline-success">Search</Button>

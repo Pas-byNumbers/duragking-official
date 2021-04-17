@@ -3,46 +3,22 @@ import NavbarContainer from './containers/NavbarContainer'
 import HeaderContainer from './containers/HeaderContainer'
 import HomeContainer from './containers/HomeContainer';
 import "./styles/app.css"
-import UserContainer from './containers/UserContainer';
-import React, { useState, useEffect } from 'react'
+import ProfileContainer from './containers/ProfileContainer';
 import NewsContainer from './containers/NewsContainer';
+import { Switch, Route} from "react-router-dom"
 
 const App = () => {
-  const [ pageServe, setPageServe ] = React.useState(<HomeContainer />)
-
-  const determinePageServe = (requestedPage) => {
-    switch(requestedPage) {
-      case "home" :
-        console.log(requestedPage)
-        setPageServe(<HomeContainer />)
-        break;
-      case "user" :
-        console.log(requestedPage)
-        setPageServe(<UserContainer />)
-        break;
-      case "news" :
-        console.log(requestedPage)
-        setPageServe(<NewsContainer />)
-        break;
-
-        default :
-        return <HomeContainer />
-    }
-  }
-
-  /* const usePageServing = () => {
-    useEffect(() => {
-      return pageServe
-    }, [])
-  } */
+  
 
   return (
     <div>
       <HeaderContainer />
-      <NavbarContainer determinePageServe={determinePageServe} />
-      {
-        pageServe
-      }
+      <NavbarContainer />
+      <Switch>
+        <Route path="/news" component={NewsContainer} />
+        <Route path="/profile" component={ProfileContainer} />
+        <Route exact path="/" component={HomeContainer} />
+      </Switch>
       
     </div>
   );
