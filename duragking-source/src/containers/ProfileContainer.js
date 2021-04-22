@@ -19,6 +19,12 @@ const UserContainer = () => {
                   <Nav.Item>
                     <Nav.Link eventKey="third">My Wishlist</Nav.Link>
                   </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link eventKey="fourth">Payment Methods</Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link eventKey="fifth">Saved Addresses</Nav.Link>
+                  </Nav.Item>
                 </Nav>
               </Col>
             </Card.Body>
@@ -35,6 +41,12 @@ const UserContainer = () => {
                   </Tab.Pane>
                   <Tab.Pane eventKey="third">
                     <h1>Wishlist Section</h1>
+                  </Tab.Pane>
+                  <Tab.Pane eventKey="fourth">
+                    <h1>Payment Methods</h1>
+                  </Tab.Pane>
+                  <Tab.Pane eventKey="fifth">
+                    <h1>Saved Addresses</h1>
                   </Tab.Pane>
                 </Card.Body>
               </Card>

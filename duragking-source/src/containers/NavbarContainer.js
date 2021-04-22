@@ -32,16 +32,23 @@ const NavbarContainer = () => {
           {/* <Nav.Link href="#link">News</Nav.Link> */}
 
           <NavDropdown title="Shop" id="basic-nav-dropdown">
-            <NavDropdown.Item href="#action/3.1">Men</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.2">
-              Women
+            <NavDropdown.Item href="#action/3.1">
+              <Link to="/shop/men">Men</Link>
             </NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.3">Kids</NavDropdown.Item>
+            <NavDropdown.Item href="#action/3.2">
+              <Link to="/shop/women">Women</Link>
+            </NavDropdown.Item>
+            <NavDropdown.Item href="#action/3.3">
+              <Link to="/shop/kids">Kids</Link>
+            </NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item href="#action/3.4">
               Show All Products
             </NavDropdown.Item>
           </NavDropdown>
+          <Button variant="light">
+            <Link to="/contact">Contact</Link>
+          </Button>
         </Nav>
         <ButtonGroup aria-label="Basic example" className="mr-sm-2">
           <RegisterModal />

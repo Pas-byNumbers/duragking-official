@@ -61,6 +61,11 @@ passport.deserializeUser(User.deserializeUser()); */
 
 app.use("/", router);
 
-app.listen(app.get("port"), () => {
+const server = app.listen(app.get("port"), () => {
   console.log(`Server running at http://localhost:${app.get("port")}`);
 });
+  process.on('SIGTERM', () => {
+    server.close(() => {
+      console.log("Process terminated")
+    })
+  })
