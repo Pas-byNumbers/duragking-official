@@ -3,10 +3,20 @@ const User = require("../models/user"),
   jsonWebToken = require("jsonwebtoken"),
   getUserParams = (body) => {
     return {
-      firstName: body.firstName,
-      lastName: body.lastName,
+      name: {
+        first: body.name.first,
+        last: body.name.last
+      },
       email: body.email,
       password: body.password,
+      address: {
+        firstLine: body.address.firstLine,
+        secondLine: body.address.secondLine,
+        thirdLine: body.address.thirdLine,
+        fourthLine: body.address.fourthLine,
+        postcode: body.address.postcode,
+        city: body.address.city
+      }
     };
   };
 
@@ -30,9 +40,21 @@ module.exports = {
         res.json(user);
         next();
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(`Error creating user: ${error.message}`);
         next(error);
       });
   },
+  show: (req, res, next) => {
+    let userId = req.params.id;
+    User.findById(userId)
+      .then(user => {
+        res.json(user);
+        next();
+      })
+      .catch(error => {
+        console.log(`Error fetching user by ID: ${error.message}`);
+        next(error);
+      });
+  }
 };

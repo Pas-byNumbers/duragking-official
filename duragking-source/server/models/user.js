@@ -4,15 +4,17 @@ const mongoose = require("mongoose"),
 
 let userSchema = new Schema(
   {
-    firstName: {
-      type: String,
-      trim: true,
-      required: true,
-    },
-    lastName: {
-      type: String,
-      trim: true,
-      required: true,
+    name: { 
+      first: {
+        type: String,
+        required: true,
+        trim: true
+      },
+      last: {
+        type: String,
+        required: true,
+        trim: true
+      }
     },
     email: {
       type: String,
@@ -24,6 +26,39 @@ let userSchema = new Schema(
       type: String,
       required: true,
     },
+    address: {
+      firstLine: {
+        type: String,
+        required: true,
+        trim: true
+      },
+      secondLine: {
+        type: String,
+        trim: true
+      },
+      thirdLine: {
+        type: String,
+        trim: true
+      },
+      fourthLine: {
+        type: String,
+        trim: true
+      },
+      postcode: {
+        type: String,
+        required: true,
+        trim: true
+      },
+      city: {
+        type: String,
+        required: true,
+        trim: true
+      }
+
+    },
+    paymentMethods: [],
+    basket: [],
+    wishlist: [],
     orders: [{ type: Schema.Types.ObjectId, ref: "Order" }],
   },
   {
@@ -32,7 +67,7 @@ let userSchema = new Schema(
 );
 
 userSchema.virtual("fullName").get(function () {
-  return `${this.firstName} ${this.lastName}`;
+  return `${this.name.first} ${this.name.last}`;
 });
 
 /*   userSchema.plugin(passportLocalMongoose, {
