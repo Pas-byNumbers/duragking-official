@@ -56,5 +56,33 @@ module.exports = {
         console.log(`Error fetching user by ID: ${error.message}`);
         next(error);
       });
+  },
+  update: (req, res, next) => {
+    let userId = req.params.id,
+    userParams = req.body;
+    User.findByIdAndUpdate(userId, 
+      { $set: userParams },
+      { new: true }
+      )
+      .then(user => {
+        res.json(user)
+      }
+      )
+      .catch(error => {
+        console.log(`Error updating user by ID: ${error.message}`);
+        next(error);
+      });
+  },
+  delete: (req, res, next) => {
+    let userId = req.params.id;
+    User.findByIdAndRemove(userId)
+      .then(() => {
+        res.json({ message: "User account successfully deleted" });
+        next();
+      })
+      .catch(error => {
+        console.log(`Error deleting user by ID: ${error.message}`);
+        next();
+      });
   }
 };
