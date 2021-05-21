@@ -1,6 +1,7 @@
 const User = require("../models/user"),
   passport = require("passport"),
   jsonWebToken = require("jsonwebtoken"),
+  httpStatus = require("http-status-codes"),
   getUserParams = (body) => {
     return {
       name: {
@@ -34,16 +35,16 @@ module.exports = {
   },
   create: (req, res, next) => {
     if (req.skip) next();
-    let userParams = getUserParams(req.body);
-    User.create(userParams)
-      .then((user) => {
-        res.json(user);
+    let newUser = new User(getUserParams(req.body));
+    User.register(newUser, req.body.password, (error, user) => {
+      if (user) {
+        res.json(user)
         next();
-      })
-      .catch(error => {
-        console.log(`Error creating user: ${error.message}`);
+      } else {
+        console.log(error);
         next(error);
-      });
+      }
+    });
   },
   show: (req, res, next) => {
     let userId = req.params.id;
@@ -84,5 +85,57 @@ module.exports = {
         console.log(`Error deleting user by ID: ${error.message}`);
         next();
       });
+  },
+  apiAuthenticate: (req, res, next) => {
+    passport.authenticate("local", (errors, user) => {
+      if (user) {
+        let signedToken = jsonWebToken.sign(
+          {
+            data: user._id,
+            exp: new Date().setDate(new Date().getDate() + 1)
+          },
+          "S3cr3tdUrAgT0k3n"
+        );
+        res.json({
+          success: true,
+          token: signedToken
+        });
+      } else
+        res.json({
+          success: false,
+          message: "Could not authenticate user."
+        });
+    })(req, res, next);
+  },
+  verifyJWT: (req, res, next) => {
+    console.log(req.headers)
+    let token = req.headers.token;
+    if (token) {
+      jsonWebToken.verify(token, "S3cr3tdUrAgT0k3n", (errors, payload) => {
+        if (payload) {
+          User.findById(payload.data).then(user => {
+            if (user) {
+              next();
+            } else {
+              res.status(httpStatus.FORBIDDEN).json({
+                error: true,
+                message: "No User account found."
+              });
+            }
+          });
+        } else {
+          res.status(httpStatus.UNAUTHORIZED).json({
+            error: true,
+            message: "Cannot verify API token."
+          });
+          next();
+        }
+      });
+    } else {
+      res.status(httpStatus.UNAUTHORIZED).json({
+        error: true,
+        message: "Provide Token"
+      });
+    }
   }
 };

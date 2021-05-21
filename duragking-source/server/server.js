@@ -8,12 +8,13 @@ const express = require("express"),
   passport = require("passport"),
   User = require("./models/user");
 
-app.use(cors());
+app.use("*", cors());
 
 // Database Init
 mongoose.Promise = global.Promise;
 mongoose.connect("mongodb://localhost:27017/official_duragking", {
   useNewUrlParser: true,
+  useUnifiedTopology: true
 });
 mongoose.set("useCreateIndex", true);
 
@@ -24,7 +25,7 @@ db.once("open", () => {
 });
 
 // Server Init
-app.set("token", process.env.TOKEN || "S3cr3tdUrAgT0k3n")
+app.set("token", process.env.TOKEN || "S3cr3tdUrAgT0k3n");
 app.set("port", process.env.PORT || 3001);
 
 router.use(
@@ -38,34 +39,32 @@ app.use(
   expressSession({
     secret: "s3cr3t_duragCookie",
     cookie: {
-      maxAge: 4000000
+      maxAge: 4000000,
     },
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
   })
 );
 
-/* app.use(passport.initialize());
+app.use(passport.initialize());
 app.use(passport.session());
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser()); */
+passport.deserializeUser(User.deserializeUser());
 
-/* 
-    app.use((req, res, next) => {
-    res.locals.loggedIn = req.isAuthenticated();
-    res.locals.currentUser = req.user;
-    next();
-  });
-   */
+app.use((req, res, next) => {
+  res.locals.loggedIn = req.isAuthenticated();
+  res.locals.currentUser = req.user;
+  next();
+});
 
 app.use("/", router);
 
 const server = app.listen(app.get("port"), () => {
   console.log(`Server running at http://localhost:${app.get("port")}`);
 });
-  process.on('SIGTERM', () => {
-    server.close(() => {
-      console.log("Process terminated")
-    })
-  })
+process.on("SIGTERM", () => {
+  server.close(() => {
+    console.log("Process terminated");
+  });
+});
